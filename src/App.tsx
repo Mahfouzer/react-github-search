@@ -1,17 +1,18 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route,
 } from "react-router-dom";
 import './App.css';
 import ListingRepos from './pages/listing-repos-page';
 import SearchingRepos from './pages/searching-repos-page';
+import history from './history';
 
 function App() {
   return (
     <div>
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route path="/" exact>
             <SearchingRepos />
