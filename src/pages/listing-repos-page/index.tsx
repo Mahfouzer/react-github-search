@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import SearchInput from '../../components/SearchInput';
 import H1 from '../../components/styled/H1';
 import Header from '../../components/styled/Header'
-import history from '../../history'
+import keywordContext from '../../context/keywordContext';
 
 export default function ListingRepos() {
 
@@ -10,11 +10,9 @@ export default function ListingRepos() {
     const handleNewSearch = useCallback(
 
         (keyword) => {
-            if (keyword) {
-                history.push(`/search/${keyword}`)
-            } else {
-                history.push(`/`);
-            }
+
+            //search using search github methods
+
         },
         [],
     )

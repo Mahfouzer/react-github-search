@@ -1,42 +1,47 @@
-import React, { useCallback, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import keywordContext from '../../context/keywordContext'
 import history from '../../history'
 import Form from '../styled/Form'
 import Input from '../styled/Input'
 import SearchIcon from '../styled/SearchIcon'
 
-export default function SearchInput({ inputChangeHandler = () => null, ...restProps }: any) {
+export default function SearchInput({ inputChangeHandler = null, submitSearchHandler, ...restProps }: any) {
 
 
-    const { name }: { name: string } = useParams();
-    const [searchKeyword, setSearchKeyword] = useState(name);
+    const { keyWord, setKeyWord } = useContext(keywordContext);
+
+
+    useEffect(() => {
+        return () => {
+            setKeyWord('');
+        }
+    }, []);
+
 
     const redirectToSearchedList = useCallback(
         (e: React.SyntheticEvent) => {
             e.preventDefault();
-            if (searchKeyword) {
-                history.push(`/search/${searchKeyword}`)
-            } else {
-                history.push('/')
-            }
+            submitSearchHandler();
         },
-        [searchKeyword],
+        [submitSearchHandler],
     )
 
     const handleSearchKeywordChange = useCallback(
         (e) => {
-            setSearchKeyword(e.target.value);
-            inputChangeHandler(e.target.value);
+            setKeyWord(e.target.value);
+            if (inputChangeHandler) {
+                inputChangeHandler();
+            }
         }
         ,
-        [inputChangeHandler],
+        [inputChangeHandler, setKeyWord],
     )
 
 
     return (
         <Form onSubmit={redirectToSearchedList}>
             <SearchIcon type="submit" />
-            <Input   {...restProps} onChange={handleSearchKeywordChange} defaultValue={searchKeyword || ''} hasLeftIcon />
+            <Input   {...restProps} onChange={handleSearchKeywordChange} defaultValue={keyWord || ''} hasLeftIcon />
         </Form>
     )
 }
