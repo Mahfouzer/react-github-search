@@ -30,26 +30,35 @@ export default function ListingRepos() {
         [],
     )
 
+    // it would be better if we made this a util function and exported it from other file
     const searchGithubRepos = async () => {
+        setLoading(true);
+
         if (!keyWord) {
+            setReposList([]);
             setError('Please write the name of the repo you want to search');
+            setLoading(false);
             return;
         }
 
-        try {
-            setLoading(true);
-            const result = await fetch(`https://api.github.com/search/repositories?q=${keyWord}${sortingBy && `&sort=${sortingBy}`}${orderingBy && `&order=${orderingBy}`}`);
-            if (!result.ok) {
+        //Todo add constants file with URl included
+        fetch(`https://api.github.com/search/repositories?q=${keyWord}
+            ${sortingBy && `&sort=${sortingBy}`}
+            ${orderingBy && `&order=${orderingBy}`}`).then(function (response) {
+            if (!response.ok || response.status !== 200) {
                 throw new Error()
             } else {
                 setError('');
             }
-            return result;
-        } catch (e) {
+            return response.json();
+        }).then(function (data) {
+            setReposList(data.items);
+        }).catch(() => {
             setError('Something went wrong, please try again later');
-        } finally {
+        }).finally(() => {
+
             setLoading(false);
-        }
+        })
     }
 
     useEffect(() => {
@@ -57,7 +66,6 @@ export default function ListingRepos() {
     }, [sortingBy, orderingBy, keyWord])
 
     const handleNewSearch = useCallback(
-
         (keyword) => {
             searchGithubRepos();
         },
@@ -67,34 +75,39 @@ export default function ListingRepos() {
 
     return (
         <div>
+            {/*header section*/}
             <Header>
                 <H1>Github Search App</H1>
                 <SearchInput inputChangeHandler={handleNewSearch} />
             </Header>
 
-            {isLoading ? <CenteredTextContainer> <H1>Loading ...</H1> </CenteredTextContainer> :
+            {isLoading && <CenteredTextContainer> <H1>Loading ...</H1> </CenteredTextContainer>}
+            {error && !isLoading && <CenteredTextContainer> <H1>{error}</H1> </CenteredTextContainer>}
 
-                error ? <CenteredTextContainer> <H1>{error}</H1> </CenteredTextContainer> :
-                    <>
-                        <HorizontalFlexContainer margin="5%">
-                            <DropDown value={orderingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setOrderingBy(e.target.value) }}>
-                                <option value='' hidden>Order by</option>
-                                <option value="ascending" >ascending </option>
-                                <option value="descending">descending </option>
-                            </DropDown>
-                            <DropDown value={sortingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setSortingBy(e.target.value) }}>
-                                <option value='' hidden >Sort by</option>
-                                <option value="forks">forks </option>
-                                <option value="stars">stars </option>
-                            </DropDown>
+            {!isLoading && !error &&
+                <>
+                    {/*filter section*/}
 
-                            <AnchorButton href="/" margin='15px 0 0 0;' onClick={resetFiltering}> Reset</AnchorButton>
-                        </HorizontalFlexContainer>
+                    <HorizontalFlexContainer margin="5%">
+                        <DropDown value={orderingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setOrderingBy(e.target.value) }}>
+                            <option value='' hidden>Order by</option>
+                            <option value="ascending" >ascending </option>
+                            <option value="descending">descending </option>
+                        </DropDown>
+                        <DropDown value={sortingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setSortingBy(e.target.value) }}>
+                            <option value='' hidden >Sort by</option>
+                            <option value="forks">forks </option>
+                            <option value="stars">stars </option>
+                        </DropDown>
+
+                        <AnchorButton href="/" margin='15px 0 0 0;' onClick={resetFiltering}> Reset</AnchorButton>
+                    </HorizontalFlexContainer>
 
 
-                        <CardSet cardsData={[]} />
-                    </>
-            }
+                    {/*Cards section*/}
+                    <CardSet cardsData={reposList} />
+
+                </>}
         </div>
     )
 }
