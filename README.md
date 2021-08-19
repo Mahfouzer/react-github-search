@@ -2,6 +2,23 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). **and Create by Nader Mahfouz**
 
+## Dependencies
+
+this App uses :
+
+- React-router-dom
+- Styled-components
+- Typescript
+
+this App doesn't use :
+
+- Redux
+- Redux-saga
+- Axios
+
+as they're an overkill
+as `contextAPI` and `FetchAPI` are more than enough
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -44,33 +61,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 # To learn React, check out the [React documentation](https://reactjs.org/).
-
-# README
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for?
-
-- Quick summary
-- Version
-- [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up?
-
-- Summary of set up
-- Configuration
-- Dependencies
-- Database configuration
-- How to run tests
-- Deployment instructions
-
-### Contribution guidelines
-
-- Writing tests
-- Code review
-- Other guidelines
-
-### Who do I talk to?
-
-- Repo owner or admin
-- Other community or team contact
