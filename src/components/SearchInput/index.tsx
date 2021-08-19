@@ -1,11 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext } from 'react'
 import keywordContext from '../../context/keywordContext'
-import history from '../../history'
 import Form from '../styled/Form'
 import Input from '../styled/Input'
 import SearchIcon from '../styled/SearchIcon'
 
-export default function SearchInput({ inputChangeHandler = null, submitSearchHandler = null, ...restProps }: any) {
+interface SearchActionProps { inputChangeHandler?: (() => void) | null; submitSearchHandler?: (() => void) | null; }
+type SearchInputProps = SearchActionProps & React.HTMLAttributes<HTMLInputElement>
+
+export default function SearchInput({ inputChangeHandler = null, submitSearchHandler = null, ...restProps }: SearchInputProps) {
 
 
     const { keyWord, setKeyWord } = useContext(keywordContext);

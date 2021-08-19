@@ -4,7 +4,7 @@ import CardDescription from '../styled/CardDescription'
 import CardInfo from '../styled/CardInfo'
 import CardTitle from '../styled/CardTitle'
 
-export default function Card({ cardData }: any) {
+export default function Card({ cardData }: { [x: string]: any }) {
 
     return (
         <CardWrapper>

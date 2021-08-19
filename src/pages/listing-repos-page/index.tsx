@@ -8,6 +8,7 @@ import H1 from '../../components/styled/H1';
 import Header from '../../components/styled/Header'
 import HorizontalFlexContainer from '../../components/styled/HorizontalFlexContainer';
 import keywordContext from '../../context/keywordContext';
+import { URL } from '../../constants';
 
 export default function ListingRepos() {
 
@@ -42,13 +43,10 @@ export default function ListingRepos() {
             return;
         }
 
-        //Todo add constants file with URl included
-        fetch(`https://api.github.com/search/repositories?q=${keyWord}${sortingBy && `&sort=${sortingBy}`}${orderingBy && `&order=${orderingBy}`}`)
+        fetch(`${URL}search/repositories?q=${keyWord}${sortingBy && `&sort=${sortingBy}`}${orderingBy && `&order=${orderingBy}`}`)
             .then(function (response) {
                 if (!response.ok || response.status !== 200) {
                     throw new Error()
-                } else {
-                    setError('');
                 }
                 return response.json();
             }).then(function (data) {
@@ -57,7 +55,6 @@ export default function ListingRepos() {
                 setError('Something went wrong, please try again later');
                 setReposList([]);
             }).finally(() => {
-
                 setLoading(false);
             })
     }
@@ -67,7 +64,7 @@ export default function ListingRepos() {
     }, [sortingBy, orderingBy, keyWord])
 
     const handleNewSearch = useCallback(
-        (keyword) => {
+        () => {
             searchGithubRepos();
         },
         [],
@@ -91,8 +88,8 @@ export default function ListingRepos() {
                     <HorizontalFlexContainer margin="5%">
                         <DropDown value={orderingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setOrderingBy(e.target.value) }}>
                             <option value='' hidden>Order by</option>
-                            <option value="ascending" >ascending </option>
-                            <option value="descending">descending </option>
+                            <option value="asc" >ascending </option>
+                            <option value="desc">descending </option>
                         </DropDown>
                         <DropDown value={sortingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setSortingBy(e.target.value) }}>
                             <option value='' hidden >Sort by</option>
