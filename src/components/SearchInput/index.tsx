@@ -5,7 +5,7 @@ import Form from '../styled/Form'
 import Input from '../styled/Input'
 import SearchIcon from '../styled/SearchIcon'
 
-export default function SearchInput({ inputChangeHandler = null, submitSearchHandler, ...restProps }: any) {
+export default function SearchInput({ inputChangeHandler = null, submitSearchHandler = null, ...restProps }: any) {
 
 
     const { keyWord, setKeyWord } = useContext(keywordContext);
@@ -21,19 +21,20 @@ export default function SearchInput({ inputChangeHandler = null, submitSearchHan
     const redirectToSearchedList = useCallback(
         (e: React.SyntheticEvent) => {
             e.preventDefault();
-            submitSearchHandler();
+            if (submitSearchHandler) {
+                submitSearchHandler();
+            }
         },
         [submitSearchHandler],
     )
 
     const handleSearchKeywordChange = useCallback(
-        (e) => {
+        (e: any) => {
             setKeyWord(e.target.value);
             if (inputChangeHandler) {
                 inputChangeHandler();
             }
-        }
-        ,
+        },
         [inputChangeHandler, setKeyWord],
     )
 
