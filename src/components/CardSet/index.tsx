@@ -10,22 +10,11 @@ export default function CardSet({ cardsData }: { cardsData: { [x: string]: any }
         return <HorizontalCenteredContainer >
             <H1>No available Data</H1>
         </HorizontalCenteredContainer>
-        // return (
-
-        //     <CardsContainer>
-        //         <Card cardData={null} />
-        //         <Card cardData={null} />
-        //         <Card cardData={null} />
-        //         <Card cardData={null} />
-        //         <Card cardData={null} />
-        //         <Card cardData={null} />
-        //     </CardsContainer>
-        // )
     }
 
     return (
         <CardsContainer>
-            {cardsData.length && cardsData.map((cardData: { [x: string]: any }) => (<Card cardData={cardData} />))}
+            {cardsData.length && cardsData.map((cardData: { [x: string]: any }) => (<Card key={cardData.id} cardData={cardData} />))}
         </CardsContainer>
     )
 }

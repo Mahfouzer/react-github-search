@@ -33,6 +33,7 @@ export default function ListingRepos() {
     // it would be better if we made this a util function and exported it from other file
     const searchGithubRepos = async () => {
         setLoading(true);
+        setError('');
 
         if (!keyWord) {
             setReposList([]);
@@ -42,23 +43,23 @@ export default function ListingRepos() {
         }
 
         //Todo add constants file with URl included
-        fetch(`https://api.github.com/search/repositories?q=${keyWord}
-            ${sortingBy && `&sort=${sortingBy}`}
-            ${orderingBy && `&order=${orderingBy}`}`).then(function (response) {
-            if (!response.ok || response.status !== 200) {
-                throw new Error()
-            } else {
-                setError('');
-            }
-            return response.json();
-        }).then(function (data) {
-            setReposList(data.items);
-        }).catch(() => {
-            setError('Something went wrong, please try again later');
-        }).finally(() => {
+        fetch(`https://api.github.com/search/repositories?q=${keyWord}${sortingBy && `&sort=${sortingBy}`}${orderingBy && `&order=${orderingBy}`}`)
+            .then(function (response) {
+                if (!response.ok || response.status !== 200) {
+                    throw new Error()
+                } else {
+                    setError('');
+                }
+                return response.json();
+            }).then(function (data) {
+                setReposList(data.items);
+            }).catch(() => {
+                setError('Something went wrong, please try again later');
+                setReposList([]);
+            }).finally(() => {
 
-            setLoading(false);
-        })
+                setLoading(false);
+            })
     }
 
     useEffect(() => {
@@ -87,7 +88,6 @@ export default function ListingRepos() {
             {!isLoading && !error &&
                 <>
                     {/*filter section*/}
-
                     <HorizontalFlexContainer margin="5%">
                         <DropDown value={orderingBy} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setOrderingBy(e.target.value) }}>
                             <option value='' hidden>Order by</option>

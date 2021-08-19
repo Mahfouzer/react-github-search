@@ -11,13 +11,6 @@ export default function SearchInput({ inputChangeHandler = null, submitSearchHan
     const { keyWord, setKeyWord } = useContext(keywordContext);
 
 
-    useEffect(() => {
-        return () => {
-            setKeyWord('');
-        }
-    }, []);
-
-
     const redirectToSearchedList = useCallback(
         (e: React.SyntheticEvent) => {
             e.preventDefault();
