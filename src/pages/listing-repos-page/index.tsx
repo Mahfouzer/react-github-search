@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import CardSet from '../../components/CardSet';
 import SearchInput from '../../components/SearchInput';
 import H1 from '../../components/styled/H1';
 import Header from '../../components/styled/Header'
@@ -23,6 +24,8 @@ export default function ListingRepos() {
                 <H1>Github Search App</H1>
                 <SearchInput inputChangeHandler={handleNewSearch} />
             </Header>
+
+            <CardSet cardsData={[]} />
         </div>
     )
 }
